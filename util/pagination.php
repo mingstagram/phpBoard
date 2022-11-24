@@ -4,7 +4,8 @@
         public $list_num; // 한 페이지 당 데이터 갯수
         public $page_num; // 한 블럭 당 페이지 수
 
-        function paging_proc($total, $page){
+        function paging_proc($total, $page){ // $total : 데이터의 총갯수(count), $page : 요청받은 page값
+
             /* paging : 전체 페이지 수 = 전체 데이터 / 페이지당 데이터 개수, ceil : 올림값, floor : 내림값, round : 반올림 */
             $total_page = ceil($total / $this->list_num);
 
@@ -39,7 +40,7 @@
                 "start" => $start
             );
 
-            return $page_arr;
+            return $page_arr; // return -> $s_pageNum : 시작 페이지, $e_pageNum : 마지막 페이지, $total_page : 총 페이지 수, $start : 페이지 시작번호
 
         }
 
