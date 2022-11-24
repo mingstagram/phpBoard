@@ -23,7 +23,7 @@ $sql = "
     , NOW()
   )
 ";   
-$result = mysqli_query($conn, $sql); 
+$result = mysqli_query($conn, $sql);  
 if ($result) {
     $response['result'] = 'success';
   } else {

@@ -3,10 +3,7 @@ error_reporting(E_ALL);
 ini_set("display_errors", 1);
     include("layout/header.php");  
     require_once("db/connect.php");
-    include("util/pagination.php");
     $connEntity = new Connect();
-    $pageEntity = new Pagination();
-
     $conn = $connEntity->load_connect(); 
     
     if ($conn->connect_error) {
@@ -16,20 +13,46 @@ ini_set("display_errors", 1);
     $sql = "SELECT count(*) as board_count FROM board_tb";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
-    $total = $row['board_count'];
- 
+    $num = $row['board_count'];
+
+    /* paging : 한 페이지 당 데이터 개수 */
+    $list_num = 5;
+
+    /* paging : 한 블럭 당 페이지 수 */
+    $page_num = 3;
+
     /* paging : 현재 페이지 */
-    $pageEntity->list_num = 5; // 한 페이지 당 데이터 갯수
-    $pageEntity->page_num = 3; // 한 블럭 당 페이지 수
-    $page = isset($_GET["page"])? $_GET["page"] : 1;  
-    $page_arr = $pageEntity->paging_proc($total, $page);
-    $start = $page_arr['start'];
-    $s_pageNum = $page_arr['s_pageNum'];
-    $e_pageNum = $page_arr['e_pageNum'];
-    $total_page = $page_arr['total_page'];
-    $list_num = $pageEntity->list_num;
+    $page = isset($_GET["page"])? $_GET["page"] : 1; 
+
+    /* paging : 전체 페이지 수 = 전체 데이터 / 페이지당 데이터 개수, ceil : 올림값, floor : 내림값, round : 반올림 */
+    $total_page = ceil($num / $list_num);
+
+    /* paging : 전체 블럭 수 = 전체 페이지 수 / 블럭 당 페이지 수 */
+    $total_block = ceil($total_page / $page_num);
+
+    /* paging : 현재 블럭 번호 = 현재 페이지 번호 / 블럭 당 페이지 수 */
+    $now_block = ceil($page / $page_num);
+
+    /* paging : 블럭 당 시작 페이지 번호 = (해당 글의 블럭번호 - 1) * 블럭당 페이지 수 + 1 */
+    $s_pageNum = ($now_block - 1) * $page_num + 1;
+    // 데이터가 0개인 경우
+    if($s_pageNum <= 0){
+        $s_pageNum = 1;
+    };
+
+    /* paging : 블럭 당 마지막 페이지 번호 = 현재 블럭 번호 * 블럭 당 페이지 수 */
+    $e_pageNum = $now_block * $page_num;
+    // 마지막 번호가 전체 페이지 수를 넘지 않도록
+    if($e_pageNum > $total_page){
+        $e_pageNum = $total_page;
+    };
+
+    /* paging : 시작 번호 = (현재 페이지 번호 - 1) * 페이지 당 보여질 데이터 수 */
+    $start = ($page - 1) * $list_num;
 
     $sql = "SELECT * FROM board_tb ORDER BY BOARD_ID desc LIMIT $start, $list_num"; 
+     
+    /* paging : 쿼리 전송 */
     $result = mysqli_query($conn, $sql);
 
     /* paging : 글번호 */

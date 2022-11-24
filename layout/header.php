@@ -45,6 +45,9 @@
                         <a class="nav-link" href="/index_login/logout.php">로그아웃</a>
                     </li>
                     <?php } ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logtest.php">에러로그</a>
+                    </li>
                 </ul>
                 <form class="d-flex">
                     <input class="form-control me-2" type="text" placeholder="Search">
