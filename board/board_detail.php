@@ -17,8 +17,8 @@
 ?>
 <div class="container card">
     <div class="card-body">
-        <a href="/"><button class="btn btn-info">돌아가기</button></a>
-        <a href="#" class="btn btn-warning">수정</a>
+        <button class="btn btn-info" onclick="history.back();">돌아가기</button>
+        <a href="/board/update_form?id=<?= $boardId ?>" class="btn btn-warning">수정</a>
         <button id="btn-delete" class="btn btn-danger">삭제</button>
     </div>
     <div class="card-header" style="margin-bottom: 10px;">

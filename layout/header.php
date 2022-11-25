@@ -11,12 +11,28 @@
     <!-- JQuery -->
     <script src="https://code.jquery.com/jquery-3.6.1.js"
         integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-    <!-- summernote(editor) -->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 </head>
 <?php 
     session_start();
+    $header_menu = '';
+    if($_SESSION['session_id'] == null){
+        $header_menu .= '<li class="nav-item">';
+        $header_menu .= '<a class="nav-link" href="/index_login/login.php">로그인</a>';
+        $header_menu .= '</li>';
+        $header_menu .= '<li class="nav-item">';
+        $header_menu .= '<a class="nav-link" href="/user/join.php">회원가입</a>';
+        $header_menu .= '</li>">';
+    } else {
+        $header_menu .= '<li class="nav-item">';
+        $header_menu .= '<a class="nav-link" href="/board/write_form.php">글쓰기</a>';
+        $header_menu .= '</li>';
+        $header_menu .= '<li class="nav-item">';
+        $header_menu .= '<a class="nav-link" href="/index_login/logout.php">로그아웃</a>';
+        $header_menu .= '</li>';
+        $header_menu .= '<li class="nav-item">';
+        $header_menu .= '<a class="nav-link" href="/logtest.php">에러로그</a>';
+        $header_menu .= '</li>';
+    }
 ?>
 
 <body>
@@ -28,30 +44,12 @@
             </button>
             <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
-                    <?php
-                        if($_SESSION['session_id'] == null){
-                    ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/index_login/login.php">로그인</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/user/join.php">회원가입</a>
-                    </li>
-                    <?php } else { ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/board/write.php">글쓰기</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/index_login/logout.php">로그아웃</a>
-                    </li>
-                    <?php } ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logtest.php">에러로그</a>
-                    </li>
+                    <?= $header_menu ?>
                 </ul>
                 <form class="d-flex">
-                    <input class="form-control me-2" type="text" placeholder="Search">
-                    <button class="btn btn-primary" type="button">Search</button>
+                    <input type="hidden" name="page" id="page" value="1">
+                    <input class="form-control me-2" type="text" placeholder="Search" name="search" id="search">
+                    <button class="btn btn-primary" type="submit" onclick="searchBoard();">Search</button>
                 </form>
             </div>
         </div>

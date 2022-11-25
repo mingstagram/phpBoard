@@ -18,7 +18,14 @@
             fclose($fp);
         ?>
     </div>
-    <input type="button" onclick="scrollTop1()" value="새로고침">
+    <ul class="pagination justify-content-center">
+        <div class="d-flex">
+            <input class="form-control me-1" type="text" placeholder="Search">
+        </div>
+
+        <button class="btn btn-info" type="button">로그검색</button>
+    </ul>
+
 </div>
 
 
