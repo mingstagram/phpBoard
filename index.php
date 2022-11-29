@@ -13,6 +13,10 @@
 
     $searchText = $_GET['search'];  
     $searchQuery = $searchText != null ? "&search=".$searchText : '';
+
+    $pageUnitText = $_GET['pageUnit'];
+    $pageUnitQuery = $pageUnitText != null ? "&pageUnit=".$pageUnitText : '';
+
     $response = Array();
     $sql = "SELECT count(*) as board_count FROM board_tb  WHERE 1 = 1";
     if($searchText != null) $sql .= " AND BOARD_TITLE LIKE '%".$searchText."%'"; 
@@ -21,7 +25,8 @@
     $row = mysqli_fetch_assoc($result);
     $total = $row['board_count']; 
     /* paging : 현재 페이지 */
-    $pageEntity->list_num = 2; // 한 페이지 당 데이터 갯수
+    $pageUnit = $pageUnitText != null ? $pageUnitText : 2;
+    $pageEntity->list_num = $pageUnit;// $pageUnitText; // 한 페이지 당 데이터 갯수
     $pageEntity->page_num = 3; // 한 블럭 당 페이지 수
     $page = isset($_GET["page"])? $_GET["page"] : 1;  
     $page_arr = $pageEntity->paging_proc($total, $page);
@@ -52,34 +57,34 @@
 
     $pageHtml = '';
     if($page <= 1){
-        $pageHtml .= '<li class="page-item disabled"><a class="page-link" href="/?page=1'.$searchQuery.'">&laquo;</a></li>';
+        $pageHtml .= '<li class="page-item disabled"><a class="page-link" href="/?page=1'.$searchQuery.$pageUnitQuery.'">&laquo;</a></li>';
     } else {
-        $pageHtml .= '<li class="page-item"><a class="page-link" href="/?page='.($page-1).$searchQuery.'">&laquo;</a></li>';
+        $pageHtml .= '<li class="page-item"><a class="page-link" href="/?page='.($page-1).$searchQuery.$pageUnitQuery.'">&laquo;</a></li>';
     }
     
     for($print_page = $s_pageNum; $print_page <= $e_pageNum; $print_page++){
         if($print_page == $page){
-            $pageHtml .= '<li class="page-item active"><a class="page-link" href="/?page='.$print_page.$searchQuery.'">'.$print_page.'</a></li>';
+            $pageHtml .= '<li class="page-item active"><a class="page-link" href="/?page='.$print_page.$searchQuery.$pageUnitQuery.'">'.$print_page.'</a></li>';
         } else {
-            $pageHtml .= '<li class="page-item"><a class="page-link" href="/?page='.$print_page.$searchQuery.'">'.$print_page.'</a></li>';
+            $pageHtml .= '<li class="page-item"><a class="page-link" href="/?page='.$print_page.$searchQuery.$pageUnitQuery.'">'.$print_page.'</a></li>';
         }
         
     }
 
     if($page >= $total_page){
-        $pageHtml .= '<li class="page-item disabled"><a class="page-link" href="/?page='.$total_page.$searchQuery.'">&raquo;</a></li>';
+        $pageHtml .= '<li class="page-item disabled"><a class="page-link" href="/?page='.$total_page.$searchQuery.$pageUnitQuery.'">&raquo;</a></li>';
     } else {
-        $pageHtml .= '<li class="page-item"><a class="page-link" href="/?page='.($page+1).$searchQuery.'">&raquo;</a></li>';
+        $pageHtml .= '<li class="page-item"><a class="page-link" href="/?page='.($page+1).$searchQuery.$pageUnitQuery.'">&raquo;</a></li>';
     } 
 ?>
 
 <div class="container">
     <div class="d-flex flex-row-reverse ">
         <div class="form-group">
-            <select id="pageUnit" name="pageUnit">
-                <option value="10">10개씩 보기</option>
-                <option value="20">20개씩 보기</option>
-                <option value="30">30개씩 보기</option>
+            <select id="pageUnit" name="pageUnit" onchange="changeUnit(this.value)">
+                <option value="2" <?php if($pageUnit == 2) echo "selected" ?>>2개씩 보기</option>
+                <option value="3" <?php if($pageUnit == 3) echo "selected" ?>>3개씩 보기</option>
+                <option value="4" <?php if($pageUnit == 4) echo "selected" ?>>4개씩 보기</option>
             </select>
         </div>
     </div>

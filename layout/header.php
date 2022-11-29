@@ -49,7 +49,7 @@
                 <form class="d-flex">
                     <input type="hidden" name="page" id="page" value="1">
                     <input class="form-control me-2" type="text" placeholder="Search" name="search" id="search">
-                    <button class="btn btn-primary" type="submit" onclick="searchBoard();">Search</button>
+                    <button class="btn btn-primary" type="button" onclick="searchBoard();">Search</button>
                 </form>
             </div>
         </div>

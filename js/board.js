@@ -61,16 +61,19 @@ function update() {
 function searchBoard() {
   var page = $("#page").val();
   var searchText = $("#search").val();
+  var pageUnit = $("#pageUnit option:selected").val();
   let data = {
     page: page,
     search: searchText,
+    pageUnit: pageUnit,
   };
+  console.log(data);
   $.ajax({
     type: "get",
     url: "index.php",
     data: data,
     success: function (res) {
-      console.log(res);
+      location.href = "/?page=1&search=" + searchText + "&pageUnit=" + pageUnit;
     },
     error: function (err) {
       console.log(err);
@@ -79,15 +82,18 @@ function searchBoard() {
   });
 }
 
-// function Change(idx){
-//   var pagenum = idx;
-//   var nowPaging = $("#pageUnit option:selected").val();
-
-//   if(nowPaging == 10){
-//       location.href="${path}/onlinecounsel/counselhistory/list.do?pageIndex="+pagenum+"&pageUnit="+nowPaging;
-//   }else if(nowPaging == 20){
-//       location.href="${path}/onlinecounsel/counselhistory/list.do?pageIndex="+pagenum+"&pageUnit="+nowPaging;
-//   }else if(nowPaging == 30){
-//       location.href="${path}/onlinecounsel/counselhistory/list.do?pageIndex="+pagenum+"&pageUnit="+nowPaging;
-//   }
-// }
+function changeUnit() {
+  var pageUnit = $("#pageUnit option:selected").val();
+  $.ajax({
+    type: "get",
+    url: "index.php",
+    data: pageUnit,
+    success: function (res) {
+      location.href = "/?page=1&pageUnit=" + pageUnit;
+    },
+    error: function (err) {
+      console.log(err);
+      alert("텅신x");
+    },
+  });
+}
