@@ -32,6 +32,9 @@
         $header_menu .= '<li class="nav-item">';
         $header_menu .= '<a class="nav-link" href="/logtest.php">에러로그</a>';
         $header_menu .= '</li>';
+        $header_menu .= '<li class="nav-item">';
+        $header_menu .= '<a class="nav-link" href="/chat.php">1:1문의</a>';
+        $header_menu .= '</li>';
     }
 ?>
 
